@@ -29,7 +29,7 @@ api = vk.API(session)
 foo = ["1", "2", "3", "4", "5"]
 
 victim = input("Victim id: ")
-r = api.users.get(user_ids = victim, fields = "id")
+r = api.users.get(user_ids = victim, fields = "id", v = 5.38)
 r = r[0]["uid"]
 victim = r
 
