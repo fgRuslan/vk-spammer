@@ -31,8 +31,10 @@ foo = ["hi", "2", "3", "fuck", "5"]
 # print (foo)
 
 victim = input("Victim id: ")
+
 r = vk.users.get(user_id = victim, fields = "id", v = 5.73)
 r = r[0]["id"]
+
 victim = r
 
 def mainloop():
