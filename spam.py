@@ -10,7 +10,7 @@ config = {}
 try:
 	exec(compile(open("config.py", "rb").read(), "config.py", 'exec'), config)
 except IOError:
-	print("Нету файла конйфигурации, чтобы его создать, запустите файл auth.py")
+	print("пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ auth.py")
 	quit(1)
 
 url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_secret=AlVXZFMUqyrnABp8ncuU&username=%s&password=%s" % (config['username'], config['password'])
@@ -18,25 +18,31 @@ url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_s
 try:
     r = urllib.request.urlopen(url)
 except urllib.error.HTTPError:
-    print("Не получилось авторизоваться (возможно неправильно указаны логин или пароль)")
+    print("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ)")
     quit(1)
 
 r = r.read()
 token = json.loads(r)["access_token"] 
 session = vk.Session(access_token = token)
-api = vk.API(session)
+vk = vk.API(session)
 
-foo = ["1", "2", "3", "4", "5"]
+foo = ["hi", "2", "3", "fuck", "5"]
+
+# print (foo)
 
 victim = input("Victim id: ")
-r = api.users.get(user_ids = victim, fields = "id")
-r = r[0]["uid"]
+r = vk.users.get(user_id = victim, fields = "id", v = 5.73)
+r = r[0]["id"]
 victim = r
 
 def mainloop():
     while(1):
-        time.sleep(2)
-        r = api.messages.send(peer_id = victim, message = random.choice(foo), v = 5.38)
+        time.sleep(7)
+        r = vk.messages.send(peer_id = victim, message = random.choice(foo), v = 5.73)
+        print()
+        print("wait...")
+        time.sleep(3)
+        print("done  ",random.choice(foo))
         pass
 
 mainloop()
