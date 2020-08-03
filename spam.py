@@ -1,6 +1,4 @@
 #!/usr/bin/python
-# -*- coding: cp1251 -*-
-#-*- coding utf8 -*-
 # Author: https://vk.com/id181265169
 
 import vk, urllib.request, urllib.error, urllib.parse, json, random, time
