@@ -36,13 +36,16 @@ r = r[0]["id"]
 victim = r
 
 def mainloop():
-    while(1):
-        time.sleep(7)
-        r = vk.messages.send(peer_id = victim, message = random.choice(foo), v = 5.73)
-        print()
-        print("wait...")
-        time.sleep(3)
-        print("done  ",random.choice(foo))
-        pass
+	try:
+		while(1):
+			time.sleep(7)
+			r = vk.messages.send(peer_id = victim, message = random.choice(foo), v = 5.73)
+			print()
+			print("wait...")
+			time.sleep(3)
+			print("done  ",random.choice(foo))
+			pass
+	except:
+		mainloop()
 
 mainloop()
