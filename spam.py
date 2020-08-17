@@ -3,15 +3,10 @@
 
 import vk, urllib.request, urllib.error, urllib.parse, json, random, time
 
-config = {}
+username = input("Login:")
+password = input("Password:")
 
-try:
-	exec(compile(open("config.py", "rb").read(), "config.py", 'exec'), config)
-except IOError:
-	print("���� ����� �������������, ����� ��� �������, ��������� ���� auth.py")
-	quit(1)
-
-url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_secret=AlVXZFMUqyrnABp8ncuU&username=%s&password=%s" % (config['username'], config['password'])
+url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_secret=AlVXZFMUqyrnABp8ncuU&username=%s&password=%s" % (username, password)
 
 try:
     r = urllib.request.urlopen(url)
