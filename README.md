@@ -9,13 +9,7 @@ pip install vk
 ### Запуск
 
 ```python
-python auth.py
-```
-
-Не показывайте сгенерированный config.py никому, инавче ваш аккаунт смогут взломать.
-
-```python
-python spammer.py
+python spam.py
 ```
 
 В скрипте укажите id пользователя, которого вы хотите заспамить.
