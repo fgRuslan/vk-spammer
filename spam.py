@@ -32,12 +32,11 @@ victim = r
 
 while(True):
 	try:
-		while(1):
-			time.sleep(random.randint(1,3) + random.randint(1,4))
-			r = vk.messages.send(peer_id = victim, message = random.choice(foo), v = 5.73)
-			print()
-			print("wait...")
-			time.sleep(random.randint(1,2) + random.randint(1,2))
-			print("done  ",random.choice(foo))
+		time.sleep(random.randint(1,3) + random.randint(1,4))
+		r = vk.messages.send(peer_id = victim, message = random.choice(foo), v = 5.73)
+		print()
+		print("wait...")
+		time.sleep(random.randint(1,2) + random.randint(1,2))
+		print("done  ",random.choice(foo))
 	except:
 		pass
