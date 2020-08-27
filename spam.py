@@ -23,24 +23,21 @@ foo = ["hi", "2", "3", "fuck", "5"]
 
 # print (foo)
 
-victim = input("Victim id: ")
+victim = input("User id: ")
 
 r = vk.users.get(user_id = victim, fields = "id", v = 5.73)
 r = r[0]["id"]
 
 victim = r
 
-def mainloop():
+while(True):
 	try:
 		while(1):
-			time.sleep(7)
+			time.sleep(random.randint(1,3) + random.randint(1,4))
 			r = vk.messages.send(peer_id = victim, message = random.choice(foo), v = 5.73)
 			print()
 			print("wait...")
-			time.sleep(3)
+			time.sleep(random.randint(1,2) + random.randint(1,2))
 			print("done  ",random.choice(foo))
-			pass
 	except:
-		mainloop()
-
-mainloop()
+		pass
