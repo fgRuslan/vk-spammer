@@ -29,13 +29,16 @@ r = r[0]["id"]
 
 victim = r
 
-print("-" * 60)
-while(True):
-	try:
-		time.sleep(random.randint(1,3) + random.randint(1,4))
-		r = vk.messages.send(peer_id = victim, message = random.choice(foo), v = 5.73)
-		print("wait...")
-		time.sleep(random.randint(1,2) + random.randint(1,2))
-		print("done ", random.choice(foo))
-	except:
-		pass
+def main():
+	print("-" * 60)
+	while(True):
+		try:
+			time.sleep(random.randint(1,3) + random.randint(1,4))
+			r = vk.messages.send(peer_id = victim, message = random.choice(foo), v = 5.73)
+			print("wait...")
+			time.sleep(random.randint(1,2) + random.randint(1,2))
+			print("done ", random.choice(foo))
+		except:
+			pass
+
+main()
