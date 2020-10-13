@@ -2,12 +2,13 @@ from setuptools import setup, find_packages
 from os.path import join, dirname
 
 DESCRIPTION = 'A VK spammer'
+LONG_DESC = DESCRIPTION
 
 try:
     with open("README.md", encoding="utf-8") as f:
-        long_description = "\n" + f.read()
+        LONG_DESC = "\n" + f.read()
 except FileNotFoundError:
-    long_description = DESCRIPTION
+    LONG_DESC = DESCRIPTION
 
 setup(
     name='vk-spammer',
@@ -17,7 +18,7 @@ setup(
     url='https://github.com/fgRuslan/vk-spammer',
     long_description_content_type="text/markdown",
     packages=find_packages(),
-    long_description=open(join(dirname(__file__), 'README.txt')).read(),
+    long_description=LONG_DESC,
     entry_points={
         'console_scripts':
             ['vk-spammer=core.spam:main']
