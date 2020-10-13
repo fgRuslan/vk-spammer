@@ -1,18 +1,12 @@
 from setuptools import setup, find_packages
 from os.path import join, dirname
 
-DESCRIPTION = 'A VK spammer'
+DESCRIPTION = 'Спаммер для ВК'
 LONG_DESC = DESCRIPTION
-
-try:
-    with open("README.md", encoding="utf-8") as f:
-        LONG_DESC = "\n" + f.read()
-except FileNotFoundError:
-    LONG_DESC = DESCRIPTION
 
 setup(
     name='vk-spammer',
-    version='1.01',
+    version='1.02.1',
     author='fgRuslan',
     author_email='ubijca16@gmail.com',
     url='https://github.com/fgRuslan/vk-spammer',
