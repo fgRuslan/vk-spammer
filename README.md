@@ -1,15 +1,15 @@
 # Vk-spammer
 Просто спаммер...
-Для запуска необходим python 3 и модуль vk
+Установка спаммера:
 
 ```
-pip install vk
+pip install vk-spammer
 ```
 
 ### Запуск
 
-```python
-python spam.py
+```
+vk-spammer
 ```
 
 В скрипте укажите id пользователя, которого вы хотите заспамить.
