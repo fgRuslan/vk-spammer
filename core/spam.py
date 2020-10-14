@@ -3,6 +3,8 @@
 # https://github.com/fgRuslan/vk-spammer
 
 import vk, urllib.request, urllib.error, urllib.parse, json, random, time
+import threading
+import sys
 
 username = input("Login: ")
 password = input("Password: ")
@@ -28,17 +30,30 @@ r = vk.users.get(user_id = victim, fields = "id", v = 5.73)
 r = r[0]["id"]
 
 victim = r
+class MainThread(threading.Thread):
+	def run(self):
+		print("-" * 60)
+		while(True):
+			try:
+				time.sleep(random.randint(1,3) + random.randint(1,4))
+				r = vk.messages.send(peer_id = victim, message = random.choice(foo), v = 5.73)
+				print("wait...")
+				time.sleep(random.randint(1,2) + random.randint(1,2))
+				print("done ", random.choice(foo))
+			except Exception as e:
+				print(e)
+				pass
 
 def main():
-	print("-" * 60)
-	while(True):
-		try:
-			time.sleep(random.randint(1,3) + random.randint(1,4))
-			r = vk.messages.send(peer_id = victim, message = random.choice(foo), v = 5.73)
-			print("wait...")
-			time.sleep(random.randint(1,2) + random.randint(1,2))
-			print("done ", random.choice(foo))
-		except:
-			pass
+	try:
+		thread = MainThread()
+		thread.daemon = True
+		thread.start()
+
+		while thread.is_alive():
+			thread.join(1)
+	except KeyboardInterrupt:
+		print("Ctrl+C pressed...")
+		sys.exit(1)
 
 main()
