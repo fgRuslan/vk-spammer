@@ -22,9 +22,23 @@ token = json.loads(r)["access_token"]
 session = vk.Session(access_token = token)
 vk = vk.API(session)
 
-foo = ["hi", "2", "3", "fuck", "5"]
+foo = [
+	"hi",
+	"2",
+	"3",
+	"fuck",
+	"5"
+]
 
 victim = input("User id: ")
+
+try:
+	temp = int(victim)
+except Exception as e:
+	print("Resolving screen name...")
+	r = vk.utils.resolveScreenName(screen_name = victim, v = 5.73)
+	victim = r["object_id"]
+	print("It is: " + victim)
 
 r = vk.users.get(user_id = victim, fields = "id", v = 5.73)
 r = r[0]["id"]
@@ -35,11 +49,11 @@ class MainThread(threading.Thread):
 		print("-" * 60)
 		while(True):
 			try:
+				msg = random.choice(foo)
 				time.sleep(random.randint(1,3) + random.randint(1,4))
-				r = vk.messages.send(peer_id = victim, message = random.choice(foo), v = 5.73)
-				print("wait...")
 				time.sleep(random.randint(1,2) + random.randint(1,2))
-				print("done ", random.choice(foo))
+				r = vk.messages.send(peer_id = victim, message = msg, v = 5.73)
+				print("Sent ", msg)
 			except Exception as e:
 				print(e)
 				pass
