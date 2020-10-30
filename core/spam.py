@@ -6,6 +6,8 @@ import vk, urllib.request, urllib.error, urllib.parse, json, random, time
 import threading
 import sys
 
+API_VERSION = 5.73
+
 username = input("Login: ")
 password = input("Password: ")
 
@@ -36,11 +38,11 @@ try:
 	temp = int(victim)
 except Exception as e:
 	print("Resolving screen name...")
-	r = vk.utils.resolveScreenName(screen_name = victim, v = 5.73)
+	r = vk.utils.resolveScreenName(screen_name = victim, v = API_VERSION)
 	victim = r["object_id"]
 	print("It is: " + victim)
 
-r = vk.users.get(user_id = victim, fields = "id", v = 5.73)
+r = vk.users.get(user_id = victim, fields = "id", v = API_VERSION)
 r = r[0]["id"]
 
 victim = r
@@ -52,7 +54,7 @@ class MainThread(threading.Thread):
 				msg = random.choice(foo)
 				time.sleep(random.randint(1,3) + random.randint(1,4))
 				time.sleep(random.randint(1,2) + random.randint(1,2))
-				r = vk.messages.send(peer_id = victim, message = msg, v = 5.73)
+				r = vk.messages.send(peer_id = victim, message = msg, v = API_VERSION)
 				print("Sent ", msg)
 			except Exception as e:
 				print(e)
