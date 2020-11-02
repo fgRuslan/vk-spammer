@@ -16,7 +16,7 @@ url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_s
 try:
     r = urllib.request.urlopen(url)
 except urllib.error.HTTPError:
-    print("�� ���������� �������������� (�������� ����������� ������� ����� ��� ������)")
+    print("Не удалось залогиниться, возможно вы ввели неправильный пароль")
     quit(1)
 
 r = r.read()
