@@ -24,13 +24,16 @@ token = json.loads(r)["access_token"]
 session = vk.Session(access_token = token)
 vk = vk.API(session)
 
-foo = [
+# -------------------------------------------
+# Сообщения, которые будет отправлять спаммер
+messages = [
 	"hi",
 	"2",
 	"3",
 	"fuck",
 	"5"
 ]
+# -------------------------------------------
 
 victim = input("User id: ")
 
@@ -51,7 +54,7 @@ class MainThread(threading.Thread):
 		print("-" * 60)
 		while(True):
 			try:
-				msg = random.choice(foo)
+				msg = random.choice(messages)
 				time.sleep(random.randint(1,3) + random.randint(1,4))
 				time.sleep(random.randint(1,2) + random.randint(1,2))
 				r = vk.messages.send(peer_id = victim, message = msg, v = API_VERSION)
