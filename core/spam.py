@@ -8,6 +8,8 @@ import sys
 
 API_VERSION = 5.73
 
+DELAY = 4 # Количество секунд задержки
+
 username = input("Login: ")
 password = input("Password: ")
 
@@ -51,14 +53,16 @@ r = r[0]["id"]
 victim = r
 class MainThread(threading.Thread):
 	def run(self):
-		print("-" * 60)
+		print("-" * 4)
+		print("Delay: ", args.delay)
+		print("-" * 4)
+		DELAY = args.delay
 		while(True):
 			try:
 				msg = random.choice(messages)
-				time.sleep(random.randint(1,3) + random.randint(1,4))
-				time.sleep(random.randint(1,2) + random.randint(1,2))
 				r = vk.messages.send(peer_id = victim, message = msg, v = API_VERSION)
 				print("Sent ", msg)
+				time.sleep(DELAY)
 			except Exception as e:
 				print(e)
 				pass
@@ -74,5 +78,16 @@ def main():
 	except KeyboardInterrupt:
 		print("Ctrl+C pressed...")
 		sys.exit(1)
+
+import argparse
+parser = argparse.ArgumentParser(description='Spam settings:')
+parser.add_argument(
+    '--delay',
+    type=int,
+    default=4,
+    help='Delay (default: 4)'
+)
+args = parser.parse_args()
+
 
 main()
