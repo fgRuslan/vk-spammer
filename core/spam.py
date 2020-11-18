@@ -10,21 +10,6 @@ API_VERSION = 5.73
 
 DELAY = 4 # Количество секунд задержки
 
-username = input("Login: ")
-password = input("Password: ")
-
-url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_secret=AlVXZFMUqyrnABp8ncuU&username=%s&password=%s" % (username, password)
-
-try:
-    r = urllib.request.urlopen(url)
-except urllib.error.HTTPError:
-    print("Не удалось залогиниться, возможно вы ввели неправильный пароль")
-    quit(1)
-
-r = r.read()
-token = json.loads(r)["access_token"] 
-session = vk.Session(access_token = token)
-vk = vk.API(session)
 
 # -------------------------------------------
 # Сообщения, которые будет отправлять спаммер
@@ -37,20 +22,7 @@ messages = [
 ]
 # -------------------------------------------
 
-victim = input("User id: ")
 
-try:
-	temp = int(victim)
-except Exception as e:
-	print("Resolving screen name...")
-	r = vk.utils.resolveScreenName(screen_name = victim, v = API_VERSION)
-	victim = r["object_id"]
-	print("It is: " + victim)
-
-r = vk.users.get(user_id = victim, fields = "id", v = API_VERSION)
-r = r[0]["id"]
-
-victim = r
 class MainThread(threading.Thread):
 	def run(self):
 		print("-" * 4)
@@ -89,5 +61,35 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
+username = input("Login: ")
+password = input("Password: ")
+
+url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_secret=AlVXZFMUqyrnABp8ncuU&username=%s&password=%s" % (username, password)
+
+try:
+    r = urllib.request.urlopen(url)
+except urllib.error.HTTPError:
+    print("Не удалось залогиниться, возможно вы ввели неправильный пароль")
+    quit(1)
+
+r = r.read()
+token = json.loads(r)["access_token"] 
+session = vk.Session(access_token = token)
+vk = vk.API(session)
+
+victim = input("User id: ")
+
+try:
+	temp = int(victim)
+except Exception as e:
+	print("Resolving screen name...")
+	r = vk.utils.resolveScreenName(screen_name = victim, v = API_VERSION)
+	victim = r["object_id"]
+	print("It is: " + victim)
+
+r = vk.users.get(user_id = victim, fields = "id", v = API_VERSION)
+r = r[0]["id"]
+
+victim = r
 
 main()
