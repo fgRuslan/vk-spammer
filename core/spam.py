@@ -79,13 +79,13 @@ vk = vk.API(session)
 
 victim = input("User id: ")
 
-try:
-	temp = int(victim)
-except Exception as e:
+if victim.isdigit():
+	victim = victim
+else:
 	print("Resolving screen name...")
 	r = vk.utils.resolveScreenName(screen_name = victim, v = API_VERSION)
 	victim = r["object_id"]
-	print("It is: " + victim)
+	print("It is: " + str(victim))
 
 r = vk.users.get(user_id = victim, fields = "id", v = API_VERSION)
 r = r[0]["id"]
