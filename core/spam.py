@@ -6,6 +6,12 @@ import vk, urllib.request, urllib.error, urllib.parse, json, random, time
 import threading
 import sys
 
+import os
+
+HOME_PATH = os.path.expanduser("~")
+SPAMMER_PATH = os.path.join(HOME_PATH + "/" + ".vk-spammer/")
+print(SPAMMER_PATH)
+
 API_VERSION = 5.73
 
 DELAY = 4 # Количество секунд задержки
@@ -21,6 +27,12 @@ messages = [
 	"5"
 ]
 # -------------------------------------------
+
+if os.path.exists(SPAMMER_PATH + "messages.txt"):
+	messages = []
+	with open(SPAMMER_PATH + "messages.txt") as f:
+		for line in f:
+			messages.append(line)
 
 
 class MainThread(threading.Thread):
