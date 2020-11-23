@@ -7,10 +7,10 @@ import threading
 import sys
 
 import os
+import platform
 
 HOME_PATH = os.path.expanduser("~")
 SPAMMER_PATH = os.path.join(HOME_PATH + "/" + ".vk-spammer/")
-print(SPAMMER_PATH)
 
 API_VERSION = 5.73
 
@@ -28,11 +28,23 @@ messages = [
 ]
 # -------------------------------------------
 
+if not os.path.exists(SPAMMER_PATH):
+	os.mkdir(SPAMMER_PATH)
+
 if os.path.exists(SPAMMER_PATH + "messages.txt"):
 	messages = []
 	with open(SPAMMER_PATH + "messages.txt") as f:
 		for line in f:
 			messages.append(line)
+
+if len(messages) == 0:
+	messages = [
+	"hi",
+	"2",
+	"3",
+	"fuck",
+	"5"
+	]
 
 
 class MainThread(threading.Thread):
@@ -71,7 +83,16 @@ parser.add_argument(
     default=4,
     help='Delay (default: 4)'
 )
+parser.add_argument('--editmessages', action='store_true')
 args = parser.parse_args()
+
+if(args.editmessages):
+	if platform.system() == "Windows":
+		os.system("notepad.exe " + SPAMMER_PATH + "messages.txt")
+	if platform.system() == "Linux":
+		os.system("nano " + SPAMMER_PATH + "messages.txt")
+	print("Please restart vk-spammer to reload message list")
+	exit(0)
 
 username = input("Login: ")
 password = input("Password: ")
