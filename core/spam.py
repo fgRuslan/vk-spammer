@@ -83,7 +83,7 @@ parser.add_argument(
     default=4,
     help='Delay (default: 4)'
 )
-parser.add_argument('--editmessages', action='store_true')
+parser.add_argument('--editmessages', action='store_true', help='Use this argument to edit the message list')
 args = parser.parse_args()
 
 if(args.editmessages):
@@ -91,7 +91,7 @@ if(args.editmessages):
 		os.system("notepad.exe " + SPAMMER_PATH + "messages.txt")
 	if platform.system() == "Linux":
 		os.system("nano " + SPAMMER_PATH + "messages.txt")
-	print("Please restart vk-spammer to reload message list")
+	print("Please restart vk-spammer to reload the message list")
 	exit(0)
 
 username = input("Login: ")
