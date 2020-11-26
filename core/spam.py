@@ -112,6 +112,10 @@ vk = vk.API(session)
 
 victim = input("User id: ")
 
+victim = victim.split("/")
+print(victim)
+victim = victim[len(victim) - 1]
+
 if victim.isdigit():
 	victim = victim
 else:
