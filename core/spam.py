@@ -78,12 +78,13 @@ def main():
 import argparse
 parser = argparse.ArgumentParser(description='Spam settings:')
 parser.add_argument(
+    '-d',
     '--delay',
     type=int,
     default=4,
     help='Delay (default: 4)'
 )
-parser.add_argument('--editmessages', action='store_true', help='Use this argument to edit the message list')
+parser.add_argument('-e', '--editmessages', action='store_true', help='Use this argument to edit the message list')
 args = parser.parse_args()
 
 if(args.editmessages):
