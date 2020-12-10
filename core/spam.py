@@ -8,6 +8,7 @@ import sys
 
 import os
 import platform
+import json
 
 HOME_PATH = os.path.expanduser("~")
 SPAMMER_PATH = os.path.join(HOME_PATH + "/" + ".vk-spammer/")
@@ -28,6 +29,8 @@ messages = [
 ]
 # -------------------------------------------
 
+auth_data = {}
+
 if not os.path.exists(SPAMMER_PATH):
 	os.mkdir(SPAMMER_PATH)
 
@@ -36,6 +39,21 @@ if os.path.exists(SPAMMER_PATH + "messages.txt"):
 	with open(SPAMMER_PATH + "messages.txt") as f:
 		for line in f:
 			messages.append(line)
+
+def do_save_auth_data():
+	with open(SPAMMER_PATH + "auth.dat", "w+") as f:
+		json.dump(auth_data, f)
+	f.close()
+def load_auth_data():
+	global auth_data
+	if os.path.exists(SPAMMER_PATH + "auth.dat"):
+		f = open(SPAMMER_PATH + "auth.dat", 'r')
+		obj = json.load(f)
+		auth_data = obj
+		f.close()
+		return True
+	else:
+		return False
 
 if len(messages) == 0:
 	messages = [
@@ -85,6 +103,7 @@ parser.add_argument(
     help='Delay (default: 4)'
 )
 parser.add_argument('-e', '--editmessages', action='store_true', help='Use this argument to edit the message list')
+parser.add_argument('-r', '--removedata', action='store_true', help='Use this argument to delete auth data (login, password)')
 args = parser.parse_args()
 
 if(args.editmessages):
@@ -95,9 +114,23 @@ if(args.editmessages):
 	print("Please restart vk-spammer to reload the message list")
 	exit(0)
 
-username = input("Login: ")
-password = input("Password: ")
+if(args.removedata):
+	print("Removing existing auth data...")
+	os.remove(SPAMMER_PATH + "auth.dat")
 
+load_result = load_auth_data()
+if(load_result == False):
+	username = input("Login: ")
+	password = input("Password: ")
+	save_auth_data = input("Save this auth data? (Y/N): ")
+
+	if(save_auth_data == "Y" or save_auth_data == "y"):
+		auth_data['username'] = username
+		auth_data['password'] = password
+		do_save_auth_data()
+else:
+	username = auth_data['username']
+	password = auth_data['password']
 url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_secret=AlVXZFMUqyrnABp8ncuU&username=%s&password=%s" % (username, password)
 
 try:
