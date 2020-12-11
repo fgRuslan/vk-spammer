@@ -43,7 +43,8 @@ if os.path.exists(SPAMMER_PATH + "messages.txt"):
 def do_save_auth_data():
 	with open(SPAMMER_PATH + "auth.dat", "w+") as f:
 		json.dump(auth_data, f)
-	f.close()
+    f.close()
+
 def load_auth_data():
 	global auth_data
 	if os.path.exists(SPAMMER_PATH + "auth.dat"):
@@ -57,11 +58,11 @@ def load_auth_data():
 
 if len(messages) == 0:
 	messages = [
-	"hi",
-	"2",
-	"3",
-	"fuck",
-	"5"
+	    "hi",
+	    "2",
+	    "3",
+	    "fuck",
+	    "5"
 	]
 
 
@@ -129,6 +130,7 @@ if(load_result == False):
 		auth_data['password'] = password
 		do_save_auth_data()
 else:
+	print("Got auth data from settings")
 	username = auth_data['username']
 	password = auth_data['password']
 url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_secret=AlVXZFMUqyrnABp8ncuU&username=%s&password=%s" % (username, password)
@@ -140,14 +142,13 @@ except urllib.error.HTTPError:
     quit(1)
 
 r = r.read()
-token = json.loads(r)["access_token"] 
+token = json.loads(r)["access_token"]
 session = vk.Session(access_token = token)
 vk = vk.API(session)
 
 victim = input("User id: ")
 
 victim = victim.split("/")
-print(victim)
 victim = victim[len(victim) - 1]
 
 if victim.isdigit():
