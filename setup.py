@@ -1,12 +1,14 @@
 from setuptools import setup, find_packages
 from os.path import join, dirname
 
+long_description = open('README.md').read()
+
 DESCRIPTION = 'Спаммер для ВК'
-LONG_DESC = DESCRIPTION
+LONG_DESC = long_description
 
 setup(
     name='vk-spammer',
-    version='1.2.2.4',
+    version='1.2.2.5',
     author='fgRuslan',
     author_email='ubijca16@gmail.com',
     url='https://github.com/fgRuslan/vk-spammer',
