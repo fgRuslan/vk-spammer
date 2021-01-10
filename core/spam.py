@@ -43,7 +43,7 @@ if os.path.exists(SPAMMER_PATH + "messages.txt"):
 def do_save_auth_data():
 	with open(SPAMMER_PATH + "auth.dat", "w+") as f:
 		json.dump(auth_data, f)
-    f.close()
+	f.close()
 
 def load_auth_data():
 	global auth_data
