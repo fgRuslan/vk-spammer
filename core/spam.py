@@ -123,9 +123,9 @@ load_result = load_auth_data()
 if(load_result == False):
 	username = input("Login: ")
 	password = input("Password: ")
-	save_auth_data = input("Save this auth data? (Y/N): ")
+	save_auth_data = input("Save this auth data? (Y/n): ")
 
-	if(save_auth_data == "Y" or save_auth_data == "y"):
+	if(save_auth_data == "Y" or save_auth_data == "y" or save_auth_data == ""):
 		auth_data['username'] = username
 		auth_data['password'] = password
 		do_save_auth_data()
