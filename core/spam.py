@@ -13,32 +13,32 @@ import json
 HOME_PATH = os.path.expanduser("~")
 SPAMMER_PATH = os.path.join(HOME_PATH + "/" + ".vk-spammer/")
 
+if not os.path.exists(SPAMMER_PATH):
+	os.mkdir(SPAMMER_PATH)
+
 API_VERSION = 5.73
 
 DELAY = 4 # Количество секунд задержки
 
+auth_data = {}
 
 # -------------------------------------------
 # Сообщения, которые будет отправлять спаммер
-messages = [
-	"hi",
-	"2",
-	"3",
-	"fuck",
-	"5"
-]
-# -------------------------------------------
-
-auth_data = {}
-
-if not os.path.exists(SPAMMER_PATH):
-	os.mkdir(SPAMMER_PATH)
+messages = []
 
 if os.path.exists(SPAMMER_PATH + "messages.txt"):
-	messages = []
 	with open(SPAMMER_PATH + "messages.txt") as f:
 		for line in f:
 			messages.append(line)
+else:
+	messages = [
+	    "hi",
+	    "2",
+	    "3",
+	    "fuck",
+	    "5"
+	]
+# -------------------------------------------
 
 def do_save_auth_data():
 	with open(SPAMMER_PATH + "auth.dat", "w+") as f:
