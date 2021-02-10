@@ -55,17 +55,7 @@ def load_auth_data():
 		return True
 	else:
 		return False
-
-if len(messages) == 0:
-	messages = [
-	    "hi",
-	    "2",
-	    "3",
-	    "fuck",
-	    "5"
-	]
-
-
+	
 class MainThread(threading.Thread):
 	def run(self):
 		print("-" * 4)
