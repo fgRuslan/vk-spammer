@@ -61,6 +61,7 @@ class MainThread(threading.Thread):
 		print("-" * 4)
 		print("Delay: ", args.delay)
 		print("-" * 4)
+		print("Press Ctrl+C to stop")
 		DELAY = args.delay
 		while(True):
 			try:
