@@ -3,6 +3,7 @@
 # https://github.com/fgRuslan/vk-spammer
 
 import vk, urllib.request, urllib.error, urllib.parse, json, random, time
+from requests.utils import requote_uri
 import threading
 import sys
 
@@ -125,6 +126,7 @@ else:
 	username = auth_data['username']
 	password = auth_data['password']
 url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_secret=AlVXZFMUqyrnABp8ncuU&username=%s&password=%s" % (username, password)
+url = requote_uri(url)
 
 try:
     r = urllib.request.urlopen(url)
