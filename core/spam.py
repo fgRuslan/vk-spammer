@@ -39,6 +39,8 @@ else:
 	    "fuck",
 	    "5"
 	]
+	# Создаём пустой файл messages.txt
+	open(SPAMMER_PATH + "messages.txt", 'a').close()
 # -------------------------------------------
 
 def do_save_auth_data():
