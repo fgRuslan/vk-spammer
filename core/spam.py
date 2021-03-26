@@ -14,6 +14,7 @@ import json
 HOME_PATH = os.path.expanduser("~")
 SPAMMER_PATH = os.path.join(HOME_PATH + "/" + ".vk-spammer/")
 
+# Если директории с настройками спамера нет, создать её
 if not os.path.exists(SPAMMER_PATH):
 	os.mkdir(SPAMMER_PATH)
 
@@ -42,12 +43,13 @@ else:
 	# Создаём пустой файл messages.txt
 	open(SPAMMER_PATH + "messages.txt", 'a').close()
 # -------------------------------------------
-
+# Сохраняем введённые данные авторизации в файл auth.dat
 def do_save_auth_data():
 	with open(SPAMMER_PATH + "auth.dat", "w+") as f:
 		json.dump(auth_data, f)
 	f.close()
 
+# Загружаем данные авторизации из файла auth.dat
 def load_auth_data():
 	global auth_data
 	if os.path.exists(SPAMMER_PATH + "auth.dat"):
@@ -58,7 +60,8 @@ def load_auth_data():
 		return True
 	else:
 		return False
-	
+# -------------------------------------------
+
 class MainThread(threading.Thread):
 	def run(self):
 		print("-" * 4)
@@ -88,6 +91,8 @@ def main():
 		print("Ctrl+C pressed...")
 		sys.exit(1)
 
+# -------------------------------------------
+# Парсер аргументов
 import argparse
 parser = argparse.ArgumentParser(description='Spam settings:')
 parser.add_argument(
@@ -100,6 +105,7 @@ parser.add_argument(
 parser.add_argument('-e', '--editmessages', action='store_true', help='Use this argument to edit the message list')
 parser.add_argument('-r', '--removedata', action='store_true', help='Use this argument to delete auth data (login, password)')
 args = parser.parse_args()
+# -------------------------------------------
 
 if(args.editmessages):
 	if platform.system() == "Windows":
@@ -113,6 +119,9 @@ if(args.removedata):
 	print("Removing existing auth data...")
 	os.remove(SPAMMER_PATH + "auth.dat")
 
+
+# Пытаемся загрузить данные авторизации из файла
+# Если не удалось, просим их ввести
 load_result = load_auth_data()
 if(load_result == False):
 	username = input("Login: ")
@@ -127,6 +136,10 @@ else:
 	print("Got auth data from settings")
 	username = auth_data['username']
 	password = auth_data['password']
+
+
+# -------------------------------------------
+# Логинимся и получаем токен
 url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_secret=AlVXZFMUqyrnABp8ncuU&username=%s&password=%s" % (username, password)
 url = requote_uri(url)
 
@@ -141,6 +154,9 @@ token = json.loads(r)["access_token"]
 session = vk.Session(access_token = token)
 vk = vk.API(session)
 
+
+# -------------------------------------------
+# Преобразовываем введённый id пользователя в цифровой формат
 victim = input("User id: ")
 
 victim = victim.split("/")
@@ -158,5 +174,6 @@ r = vk.users.get(user_id = victim, fields = "id", v = API_VERSION)
 r = r[0]["id"]
 
 victim = r
-
+# -------------------------------------------
+# Запускатор главного потока
 main()
