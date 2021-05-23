@@ -14,6 +14,9 @@ import json
 HOME_PATH = os.path.expanduser("~")
 SPAMMER_PATH = os.path.join(HOME_PATH + "/" + ".vk-spammer/")
 
+SPAMMING_ONLINE_USERS = False
+SPAMMING_FRIENDS = False
+
 # Если директории с настройками спамера нет, создать её
 if not os.path.exists(SPAMMER_PATH):
 	os.mkdir(SPAMMER_PATH)
@@ -69,15 +72,44 @@ class MainThread(threading.Thread):
 		print("-" * 4)
 		print("Press Ctrl+C to stop")
 		DELAY = args.delay
-		while(True):
-			try:
-				msg = random.choice(messages)
-				r = vk.messages.send(peer_id = victim, message = msg, v = API_VERSION)
-				print("Sent ", msg)
-				time.sleep(DELAY)
-			except Exception as e:
-				print(e)
-				pass
+		if SPAMMING_ONLINE_USERS:
+			friend_list = vk.friends.get(fields = 'online', v = API_VERSION)['items']
+			while(True):
+				try:
+					msg = random.choice(messages)
+					for friend in friend_list:
+						if friend['online'] == 0:
+							continue
+						victim_id = friend['id']
+						r = vk.messages.send(peer_id = victim_id, message = msg, v = API_VERSION)
+						print("Sent ", msg, " to ", victim_id)
+					time.sleep(DELAY)
+				except Exception as e:
+					print(e)
+					pass
+		elif SPAMMING_FRIENDS:
+			friend_list = vk.friends.get(v = API_VERSION)['items']
+			while(True):
+				try:
+					msg = random.choice(messages)
+					for friend in friend_list:
+						victim_id = friend['id']
+						r = vk.messages.send(peer_id = victim_id, message = msg, v = API_VERSION)
+						print("Sent ", msg, " to ", victim_id)
+					time.sleep(DELAY)
+				except Exception as e:
+					print(e)
+					pass
+		else:
+			while(True):
+				try:
+					msg = random.choice(messages)
+					r = vk.messages.send(peer_id = victim, message = msg, v = API_VERSION)
+					print("Sent ", msg)
+					time.sleep(DELAY)
+				except Exception as e:
+					print(e)
+					pass
 
 def main():
 	try:
@@ -159,21 +191,27 @@ vk = vk.API(session)
 # Преобразовываем введённый id пользователя в цифровой формат
 victim = input("User id: ")
 
-victim = victim.split("/")
-victim = victim[len(victim) - 1]
-
-if victim.isdigit():
-	victim = victim
+if victim == "#online":
+	SPAMMING_ONLINE_USERS = True
+elif victim == "#friends":
+	SPAMMING_FRIENDS = True
 else:
-	print("Resolving screen name...")
-	r = vk.utils.resolveScreenName(screen_name = victim, v = API_VERSION)
-	victim = r["object_id"]
-	print("It is: " + str(victim))
 
-r = vk.users.get(user_id = victim, fields = "id", v = API_VERSION)
-r = r[0]["id"]
+	victim = victim.split("/")
+	victim = victim[len(victim) - 1]
 
-victim = r
+	if victim.isdigit():
+		victim = victim
+	else:
+		print("Resolving screen name...")
+		r = vk.utils.resolveScreenName(screen_name = victim, v = API_VERSION)
+		victim = r["object_id"]
+		print("It is: " + str(victim))
+
+	r = vk.users.get(user_id = victim, fields = "id", v = API_VERSION)
+	r = r[0]["id"]
+
+	victim = r
 # -------------------------------------------
 # Запускатор главного потока
 main()
