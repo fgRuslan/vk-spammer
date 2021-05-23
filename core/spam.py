@@ -4,6 +4,7 @@
 
 import vk, urllib.request, urllib.error, urllib.parse, json, random, time
 from requests.utils import requote_uri
+from python3_anticaptcha import ImageToTextTask, errors
 import threading
 import sys
 
@@ -16,6 +17,7 @@ SPAMMER_PATH = os.path.join(HOME_PATH + "/" + ".vk-spammer/")
 
 SPAMMING_ONLINE_USERS = False
 SPAMMING_FRIENDS = False
+ANTICAPTCHA_KEY = ''
 
 # Если директории с настройками спамера нет, создать её
 if not os.path.exists(SPAMMER_PATH):
@@ -64,6 +66,10 @@ def load_auth_data():
 	else:
 		return False
 # -------------------------------------------
+
+def captha_handler(captcha):
+	key = ImageToTextTask.ImageToTextTask(anticaptcha_key=ANTICAPTCHA_KEY, save_format=const).captha_handler(captha_link=captcha.get_url())
+	return captcha.try_again(key['solution']['text'])
 
 class MainThread(threading.Thread):
 	def run(self):
@@ -183,7 +189,7 @@ except urllib.error.HTTPError:
 
 r = r.read()
 token = json.loads(r)["access_token"]
-session = vk.Session(access_token = token)
+session = vk.Session(access_token = token, captha_handler=captha_handler)
 vk = vk.API(session)
 
 
