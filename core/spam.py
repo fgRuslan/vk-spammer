@@ -2,7 +2,7 @@
 # Author: https://vk.com/id181265169
 # https://github.com/fgRuslan/vk-spammer
 
-import vk, urllib.request, urllib.error, urllib.parse, json, random, time
+import urllib.request, urllib.error, urllib.parse, json, random, time
 from requests.utils import requote_uri
 from python3_anticaptcha import ImageToTextTask, errors
 import threading
@@ -11,13 +11,19 @@ import sys
 import os
 import platform
 import json
+import vk_api
 
 HOME_PATH = os.path.expanduser("~")
 SPAMMER_PATH = os.path.join(HOME_PATH + "/" + ".vk-spammer/")
 
 SPAMMING_ONLINE_USERS = False
 SPAMMING_FRIENDS = False
+USE_TOKEN = False
+
 ANTICAPTCHA_KEY = ''
+
+username = None
+password = None
 
 # Если директории с настройками спамера нет, создать её
 if not os.path.exists(SPAMMER_PATH):
@@ -39,11 +45,11 @@ if os.path.exists(SPAMMER_PATH + "messages.txt"):
 			messages.append(line)
 else:
 	messages = [
-	    "hi",
-	    "2",
-	    "3",
-	    "fuck",
-	    "5"
+		"hi",
+		"2",
+		"3",
+		"fuck",
+		"5"
 	]
 	# Создаём пустой файл messages.txt
 	open(SPAMMER_PATH + "messages.txt", 'a').close()
@@ -66,10 +72,6 @@ def load_auth_data():
 	else:
 		return False
 # -------------------------------------------
-
-def captha_handler(captcha):
-	key = ImageToTextTask.ImageToTextTask(anticaptcha_key=ANTICAPTCHA_KEY, save_format=const).captha_handler(captha_link=captcha.get_url())
-	return captcha.try_again(key['solution']['text'])
 
 class MainThread(threading.Thread):
 	def run(self):
@@ -94,13 +96,15 @@ class MainThread(threading.Thread):
 					print(e)
 					pass
 		elif SPAMMING_FRIENDS:
-			friend_list = vk.friends.get(v = API_VERSION)['items']
+			friend_list = vk.friends.get(fields = 'online', v = API_VERSION)['items']
 			while(True):
 				try:
 					msg = random.choice(messages)
 					for friend in friend_list:
 						victim_id = friend['id']
-						r = vk.messages.send(peer_id = victim_id, message = msg, v = API_VERSION)
+						if(hasattr(friend, 'deactivated')):
+							continue
+						r = vk.messages.send(user_id = victim_id, message = msg, v = API_VERSION)
 						print("Sent ", msg, " to ", victim_id)
 					time.sleep(DELAY)
 				except Exception as e:
@@ -134,11 +138,11 @@ def main():
 import argparse
 parser = argparse.ArgumentParser(description='Spam settings:')
 parser.add_argument(
-    '-d',
-    '--delay',
-    type=int,
-    default=4,
-    help='Delay (default: 4)'
+	'-d',
+	'--delay',
+	type=int,
+	default=4,
+	help='Delay (default: 4)'
 )
 parser.add_argument('-e', '--editmessages', action='store_true', help='Use this argument to edit the message list')
 parser.add_argument('-r', '--removedata', action='store_true', help='Use this argument to delete auth data (login, password)')
@@ -162,8 +166,13 @@ if(args.removedata):
 # Если не удалось, просим их ввести
 load_result = load_auth_data()
 if(load_result == False):
-	username = input("Login: ")
-	password = input("Password: ")
+	username = input("Login (или токен): ")
+	if len(username) == 85:
+		USE_TOKEN = True
+	if not USE_TOKEN:
+		password = input("Password: ")
+	else
+		password = ''
 	save_auth_data = input("Save this auth data? (Y/n): ")
 
 	if(save_auth_data == "Y" or save_auth_data == "y" or save_auth_data == ""):
@@ -175,26 +184,39 @@ else:
 	username = auth_data['username']
 	password = auth_data['password']
 
+def captha_handler(captcha):
+	key = ImageToTextTask.ImageToTextTask(anticaptcha_key=ANTICAPTCHA_KEY, save_format='const').captcha_handler(captcha_link=captcha.get_url())
+	print(key)
+	return captcha.try_again(key['solution']['text'])
 
 # -------------------------------------------
 # Логинимся и получаем токен
-url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_secret=AlVXZFMUqyrnABp8ncuU&username=%s&password=%s" % (username, password)
-url = requote_uri(url)
+vk_session = None
+
+anticaptcha_api_key = input("API ключ от anti-captcha.com (оставьте пустым если он не нужен): ")
+if anticaptcha_api_key == '':
+	if USE_TOKEN:
+		vk_session = vk_api.VkApi(token=username)
+	else:
+		vk_session = vk_api.VkApi(login=username, password=password)
+else:
+	ANTICAPTCHA_KEY = anticaptcha_api_key
+	if USE_TOKEN:
+		vk_session = vk_api.VkApi(token=username, captcha_handler=captha_handler)
+	else:
+		vk_session = vk_api.VkApi(login=username, password=password, captcha_handler=captha_handler)
 
 try:
-    r = urllib.request.urlopen(url)
-except urllib.error.HTTPError:
-    print("Не удалось залогиниться, возможно вы ввели неправильный пароль")
-    quit(1)
+	vk_session.auth(token_only=True)
+except vk_api.AuthError as error_msg:
+    print(error_msg)
 
-r = r.read()
-token = json.loads(r)["access_token"]
-session = vk.Session(access_token = token, captha_handler=captha_handler)
-vk = vk.API(session)
+vk = vk_session.get_api()
 
 
 # -------------------------------------------
 # Преобразовываем введённый id пользователя в цифровой формат
+
 victim = input("User id: ")
 
 if victim == "#online":
