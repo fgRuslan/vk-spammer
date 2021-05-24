@@ -171,7 +171,7 @@ if(load_result == False):
 		USE_TOKEN = True
 	if not USE_TOKEN:
 		password = input("Password: ")
-	else
+	else:
 		password = ''
 	save_auth_data = input("Save this auth data? (Y/n): ")
 
@@ -181,6 +181,8 @@ if(load_result == False):
 		do_save_auth_data()
 else:
 	print("Got auth data from settings")
+	if len(username) == 85:
+		USE_TOKEN = True
 	username = auth_data['username']
 	password = auth_data['password']
 
