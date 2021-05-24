@@ -92,6 +92,9 @@ class MainThread(threading.Thread):
 						r = vk.messages.send(peer_id = victim_id, message = msg, v = API_VERSION)
 						print("Sent ", msg, " to ", victim_id)
 					time.sleep(DELAY)
+				except vk_api.exceptions.ApiError as e:
+					print("ОШИБКА!")
+					print(e)
 				except Exception as e:
 					print(e)
 					pass
@@ -107,6 +110,9 @@ class MainThread(threading.Thread):
 						r = vk.messages.send(user_id = victim_id, message = msg, v = API_VERSION)
 						print("Sent ", msg, " to ", victim_id)
 					time.sleep(DELAY)
+				except vk_api.exceptions.ApiError as e:
+					print("ОШИБКА!")
+					print(e)
 				except Exception as e:
 					print(e)
 					pass
@@ -117,6 +123,9 @@ class MainThread(threading.Thread):
 					r = vk.messages.send(peer_id = victim, message = msg, v = API_VERSION)
 					print("Sent ", msg)
 					time.sleep(DELAY)
+				except vk_api.exceptions.ApiError as e:
+					print("ОШИБКА!")
+					print(e)
 				except Exception as e:
 					print(e)
 					pass
