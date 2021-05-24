@@ -196,8 +196,11 @@ else:
 	password = auth_data['password']
 
 def captha_handler(captcha):
+	if ANTICAPTCHA_KEY == '':
+		url = captcha.get_url()
+		solution = input("Решите капчу ({0}): ".format(captcha.get_url))
+		return captcha.try_again(solution)
 	key = ImageToTextTask.ImageToTextTask(anticaptcha_key=ANTICAPTCHA_KEY, save_format='const').captcha_handler(captcha_link=captcha.get_url())
-	print(key)
 	return captcha.try_again(key['solution']['text'])
 
 # -------------------------------------------
