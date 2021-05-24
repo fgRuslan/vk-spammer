@@ -42,7 +42,7 @@ messages = []
 if os.path.exists(SPAMMER_PATH + "messages.txt"):
 	with open(SPAMMER_PATH + "messages.txt") as f:
 		for line in f:
-			messages.append(line)
+			messages.append(line.encode('cp1251').decode('utf-8'))
 else:
 	messages = [
 		"hi",
