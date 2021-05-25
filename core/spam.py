@@ -89,7 +89,7 @@ class MainThread(threading.Thread):
 						if friend['online'] == 0:
 							continue
 						victim_id = friend['id']
-						r = vk.messages.send(peer_id = victim_id, message = msg, v = API_VERSION)
+						r = vk.messages.send(user_id = victim_id, message = msg, v = API_VERSION, random_id = random.randint(0,10000))
 						print("Sent ", msg, " to ", victim_id)
 					time.sleep(DELAY)
 				except vk_api.exceptions.ApiError as e:
@@ -107,7 +107,7 @@ class MainThread(threading.Thread):
 						victim_id = friend['id']
 						if(hasattr(friend, 'deactivated')):
 							continue
-						r = vk.messages.send(user_id = victim_id, message = msg, v = API_VERSION)
+						r = vk.messages.send(user_id = victim_id, message = msg, v = API_VERSION, random_id = random.randint(0,10000))
 						print("Sent ", msg, " to ", victim_id)
 					time.sleep(DELAY)
 				except vk_api.exceptions.ApiError as e:
@@ -120,7 +120,7 @@ class MainThread(threading.Thread):
 			while(True):
 				try:
 					msg = random.choice(messages)
-					r = vk.messages.send(peer_id = victim, message = msg, v = API_VERSION)
+					r = vk.messages.send(user_id = victim, message = msg, v = API_VERSION, random_id = random.randint(0,10000))
 					print("Sent ", msg)
 					time.sleep(DELAY)
 				except vk_api.exceptions.ApiError as e:
