@@ -81,14 +81,16 @@ class MainThread(threading.Thread):
 		print("Press Ctrl+C to stop")
 		DELAY = args.delay
 		if SPAMMING_ONLINE_USERS:
-			friend_list = vk.friends.get(fields = 'online', v = API_VERSION)['items']
+			friend_list = vk_session.method('friends.search', {'user_id': MyID, "is_closed": "false",
+			"can_access_closed": "true", 'can_write_private_message': 1, 'count': 1000,
+			'fields': 'online'})['items']
 			while(True):
 				try:
 					msg = random.choice(messages)
 					for friend in friend_list:
 						if friend['online'] == 0:
 							continue
-						victim_id = friend['id']
+						victim_id = int(friend['id'])
 						r = vk.messages.send(user_id = victim_id, message = msg, v = API_VERSION, random_id = random.randint(0,10000))
 						print("Sent ", msg, " to ", victim_id)
 					time.sleep(DELAY)
@@ -99,12 +101,14 @@ class MainThread(threading.Thread):
 					print(e)
 					pass
 		elif SPAMMING_FRIENDS:
-			friend_list = vk.friends.get(fields = 'online', v = API_VERSION)['items']
+			friend_list = vk_session.method('friends.search', {'user_id': MyID, "is_closed": "false",
+			"can_access_closed": "true", 'can_write_private_message': 1, 'count': 1000,
+			'fields': 'online'})['items']
 			while(True):
 				try:
 					msg = random.choice(messages)
 					for friend in friend_list:
-						victim_id = friend['id']
+						victim_id = int(friend['id'])
 						if(hasattr(friend, 'deactivated')):
 							continue
 						r = vk.messages.send(user_id = victim_id, message = msg, v = API_VERSION, random_id = random.randint(0,10000))
