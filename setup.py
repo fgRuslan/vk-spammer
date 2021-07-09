@@ -8,7 +8,7 @@ LONG_DESC = long_description
 
 setup(
     name='vk-spammer',
-    version='1.2.3.0',
+    version='1.2.3.1',
     author='fgRuslan',
     author_email='ubijca16@gmail.com',
     url='https://github.com/fgRuslan/vk-spammer',
@@ -21,6 +21,6 @@ setup(
     },
     install_requires=[
         'vk_api',
-        'python3_anticaptcha'
+        'python3-anticaptcha'
     ]
 )

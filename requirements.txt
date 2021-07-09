@@ -1,2 +1,2 @@
 vk_api
-python3_anticaptcha
+python3-anticaptcha
