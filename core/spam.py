@@ -124,7 +124,8 @@ class MainThread(threading.Thread):
 			while(True):
 				try:
 					msg = random.choice(messages)
-					r = vk.messages.send(user_id = victim, message = msg, v = API_VERSION, random_id = random.randint(0,10000))
+					print(victim)
+					r = vk.messages.send(peer_id = victim, message = msg, v = API_VERSION, random_id = random.randint(0,10000))
 					print("Sent ", msg)
 					time.sleep(DELAY)
 				except vk_api.exceptions.ApiError as e:
@@ -194,10 +195,10 @@ if(load_result == False):
 		do_save_auth_data()
 else:
 	print("Got auth data from settings")
-	if len(username) == 85:
-		USE_TOKEN = True
 	username = auth_data['username']
 	password = auth_data['password']
+	if len(username) == 85:
+		USE_TOKEN = True
 
 def captha_handler(captcha):
 	if ANTICAPTCHA_KEY == '':
@@ -206,6 +207,19 @@ def captha_handler(captcha):
 		return captcha.try_again(solution)
 	key = ImageToTextTask.ImageToTextTask(anticaptcha_key=ANTICAPTCHA_KEY, save_format='const').captcha_handler(captcha_link=captcha.get_url())
 	return captcha.try_again(key['solution']['text'])
+
+def get_token(username, password):
+	url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_secret=AlVXZFMUqyrnABp8ncuU&username=%s&password=%s" % (username, password)
+
+	try:
+		r = urllib.request.urlopen(url)
+	except urllib.error.HTTPError:
+		print("Не удалось залогиниться, возможно вы ввели неправильный пароль")
+		quit(1)
+
+	r = r.read()
+	token = json.loads(r)["access_token"]
+	return token
 
 # -------------------------------------------
 # Логинимся и получаем токен
@@ -216,13 +230,15 @@ if anticaptcha_api_key == '':
 	if USE_TOKEN:
 		vk_session = vk_api.VkApi(token=username)
 	else:
-		vk_session = vk_api.VkApi(login=username, password=password)
+		token = get_token(username, password)
+		vk_session = vk_api.VkApi(token=token)
 else:
 	ANTICAPTCHA_KEY = anticaptcha_api_key
 	if USE_TOKEN:
 		vk_session = vk_api.VkApi(token=username, captcha_handler=captha_handler)
 	else:
-		vk_session = vk_api.VkApi(login=username, password=password, captcha_handler=captha_handler)
+		token = get_token(username, password)
+		vk_session = vk_api.VkApi(token=token, captcha_handler=captha_handler)
 
 try:
 	vk_session.auth(token_only=True)
