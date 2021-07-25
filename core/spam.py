@@ -53,6 +53,10 @@ else:
 	]
 	# Создаём пустой файл messages.txt
 	open(SPAMMER_PATH + "messages.txt", 'a').close()
+
+if(len(messages) == 0):
+	print("Список сообщений пуст. Запустите спамер с параметром -e (vk-spammer -e) чтобы ввести список сообщений.")
+	exit(0)
 # -------------------------------------------
 # Сохраняем введённые данные авторизации в файл auth.dat
 def do_save_auth_data():
