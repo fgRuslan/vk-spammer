@@ -54,9 +54,6 @@ else:
 	# Создаём пустой файл messages.txt
 	open(SPAMMER_PATH + "messages.txt", 'a').close()
 
-if(len(messages) == 0):
-	print("Список сообщений пуст. Запустите спамер с параметром -e (vk-spammer -e) чтобы ввести список сообщений.")
-	exit(0)
 # -------------------------------------------
 # Сохраняем введённые данные авторизации в файл auth.dat
 def do_save_auth_data():
@@ -79,10 +76,14 @@ def load_auth_data():
 
 class MainThread(threading.Thread):
 	def run(self):
+		if(len(messages) == 0):
+			print("Список сообщений пуст. Запустите спамер с параметром -e (vk-spammer -e) чтобы ввести список сообщений.")
+			exit(0)
 		print("-" * 4)
 		print("Delay: ", args.delay)
 		print("-" * 4)
 		print("Press Ctrl+C to stop")
+		
 		DELAY = args.delay
 		if SPAMMING_ONLINE_USERS:
 			friend_list = vk_session.method('friends.search', {'user_id': MyID, "is_closed": "false",
