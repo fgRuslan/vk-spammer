@@ -83,9 +83,9 @@ class MainThread(threading.Thread):
 			print("Список сообщений пуст. Запустите спамер с параметром -e (vk-spammer -e) чтобы ввести список сообщений.")
 			exit(0)
 		print("-" * 4)
-		print("Delay: ", args.delay)
+		print("Задержка: ", args.delay)
 		print("-" * 4)
-		print("Press Ctrl+C to stop")
+		print("Нажмите Ctrl+C чтобы остановить")
 		
 		DELAY = args.delay
 		if SPAMMING_ONLINE_USERS:
@@ -191,17 +191,17 @@ if(load_result == False):
 	if len(username) == 85:
 		USE_TOKEN = True
 	if not USE_TOKEN:
-		password = input("Password: ")
+		password = input("Пароль: ")
 	else:
 		password = ''
-	save_auth_data = input("Save this auth data? (Y/n): ")
+	save_auth_data = input("Сохранить эти данные авторизации? (Y/n): ")
 
 	if(save_auth_data == "Y" or save_auth_data == "y" or save_auth_data == ""):
 		auth_data['username'] = username
 		auth_data['password'] = password
 		do_save_auth_data()
 else:
-	print("Got auth data from settings")
+	print("Данные авторизации получены из настроек")
 	username = auth_data['username']
 	password = auth_data['password']
 	if len(username) == 85:
