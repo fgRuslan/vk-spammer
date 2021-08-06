@@ -72,6 +72,9 @@ def load_auth_data():
 		return True
 	else:
 		return False
+def remove_auth_data():
+	print("Удаляю текущие данные авторизации...")
+	os.remove(SPAMMER_PATH + "auth.dat")
 # -------------------------------------------
 
 class MainThread(threading.Thread):
@@ -177,8 +180,7 @@ if(args.editmessages):
 	exit(0)
 
 if(args.removedata):
-	print("Removing existing auth data...")
-	os.remove(SPAMMER_PATH + "auth.dat")
+	remove_auth_data()
 
 
 # Пытаемся загрузить данные авторизации из файла
@@ -220,6 +222,7 @@ def get_token(username, password):
 		r = urllib.request.urlopen(url)
 	except urllib.error.HTTPError:
 		print("Не удалось залогиниться, возможно вы ввели неправильный пароль")
+		remove_auth_data()
 		quit(1)
 
 	r = r.read()
