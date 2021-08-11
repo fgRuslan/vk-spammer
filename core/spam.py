@@ -125,7 +125,6 @@ class MainThread(threading.Thread):
 					print(e)
 				except Exception as e:
 					print(e)
-					pass
 		else:
 			while(True):
 				try:
@@ -139,7 +138,6 @@ class MainThread(threading.Thread):
 					print(e)
 				except Exception as e:
 					print(e)
-					pass
 
 def main():
 	try:
