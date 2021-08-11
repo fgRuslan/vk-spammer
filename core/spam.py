@@ -70,8 +70,7 @@ def load_auth_data():
 		auth_data = obj
 		f.close()
 		return True
-	else:
-		return False
+	return False
 def remove_auth_data():
 	print("Удаляю текущие данные авторизации...")
 	os.remove(SPAMMER_PATH + "auth.dat")
@@ -81,7 +80,7 @@ class MainThread(threading.Thread):
 	def run(self):
 		if(len(messages) == 0):
 			print("Список сообщений пуст. Запустите спамер с параметром -e (vk-spammer -e) чтобы ввести список сообщений.")
-			exit(0)
+			sys.exit(0)
 		print("-" * 4)
 		print("Задержка: ", args.delay)
 		print("-" * 4)
@@ -89,7 +88,7 @@ class MainThread(threading.Thread):
 		
 		DELAY = args.delay
 		if SPAMMING_ONLINE_USERS:
-			friend_list = vk_session.method('friends.search', {'user_id': MyID, "is_closed": "false",
+			friend_list = vk_session.method('friends.search', {"is_closed": "false",
 			"can_access_closed": "true", 'can_write_private_message': 1, 'count': 1000,
 			'fields': 'online'})['items']
 			while(True):
@@ -107,9 +106,8 @@ class MainThread(threading.Thread):
 					print(e)
 				except Exception as e:
 					print(e)
-					pass
 		elif SPAMMING_FRIENDS:
-			friend_list = vk_session.method('friends.search', {'user_id': MyID, "is_closed": "false",
+			friend_list = vk_session.method('friends.search', {"is_closed": "false",
 			"can_access_closed": "true", 'can_write_private_message': 1, 'count': 1000,
 			'fields': 'online'})['items']
 			while(True):
@@ -209,8 +207,7 @@ else:
 
 def captha_handler(captcha):
 	if ANTICAPTCHA_KEY == '':
-		url = captcha.get_url()
-		solution = input("Решите капчу ({0}): ".format(captcha.get_url))
+		solution = input("Решите капчу ({0}): ".format(captcha.get_url()))
 		return captcha.try_again(solution)
 	key = ImageToTextTask.ImageToTextTask(anticaptcha_key=ANTICAPTCHA_KEY, save_format='const').captcha_handler(captcha_link=captcha.get_url())
 	return captcha.try_again(key['solution']['text'])
@@ -223,7 +220,7 @@ def get_token(username, password):
 	except urllib.error.HTTPError:
 		print("Не удалось залогиниться, возможно вы ввели неправильный пароль")
 		remove_auth_data()
-		quit(1)
+		sys.exit(1)
 
 	r = r.read()
 	token = json.loads(r)["access_token"]
