@@ -29,7 +29,7 @@ password = None
 if not os.path.exists(SPAMMER_PATH):
 	os.mkdir(SPAMMER_PATH)
 
-API_VERSION = 5.73
+API_VERSION = 5.131
 
 DELAY = 4 # Количество секунд задержки
 
