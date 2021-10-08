@@ -215,7 +215,8 @@ def get_token(username, password):
 
 	try:
 		r = urllib.request.urlopen(url)
-	except urllib.error.HTTPError:
+	except urllib.error.HTTPError as e:
+		print(e)
 		print("Не удалось залогиниться, возможно вы ввели неправильный пароль")
 		remove_auth_data()
 		sys.exit(1)
@@ -224,6 +225,12 @@ def get_token(username, password):
 	token = json.loads(r)["access_token"]
 	return token
 
+def auth_handler():
+	key = input("Введите код подтверждения: ")
+	remember_device = True
+	return key, remember_device
+
+
 # -------------------------------------------
 # Логинимся и получаем токен
 vk_session = None
@@ -231,17 +238,16 @@ vk_session = None
 anticaptcha_api_key = input("API ключ от anti-captcha.com (оставьте пустым если он не нужен): ")
 if anticaptcha_api_key == '':
 	if USE_TOKEN:
-		vk_session = vk_api.VkApi(token=username)
+		vk_session = vk_api.VkApi(token=username, auth_handler=auth_handler)
 	else:
-		token = get_token(username, password)
-		vk_session = vk_api.VkApi(token=token)
+		vk_session = vk_api.VkApi(username, password, auth_handler=auth_handler)
 else:
 	ANTICAPTCHA_KEY = anticaptcha_api_key
 	if USE_TOKEN:
-		vk_session = vk_api.VkApi(token=username, captcha_handler=captha_handler)
+		vk_session = vk_api.VkApi(token=username, captcha_handler=captha_handler, auth_handler=auth_handler)
 	else:
 		token = get_token(username, password)
-		vk_session = vk_api.VkApi(token=token, captcha_handler=captha_handler)
+		vk_session = vk_api.VkApi(username, password, captcha_handler=captha_handler, auth_handler=auth_handler)
 
 try:
 	vk_session.auth(token_only=True)
