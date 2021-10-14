@@ -27,7 +27,7 @@ jobs:
 
     - name: PyInstaller
       run: |
-        pyinstaller --onefile core/spam.py
+        pyinstaller --exclude-module _bootlocale --onefile core/spam.py
 
     - name: Publish artifact
       uses: actions/upload-artifact@v2
