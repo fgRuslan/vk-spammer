@@ -20,6 +20,10 @@ SPAMMING_ONLINE_USERS = False
 SPAMMING_FRIENDS = False
 USE_TOKEN = False
 
+# Данные из Kate mobile
+API_ID = "2685278"
+tmp = "hHbJug59sKJie78wjrH8"
+
 ANTICAPTCHA_KEY = ''
 
 username = None
@@ -238,16 +242,16 @@ vk_session = None
 anticaptcha_api_key = input("API ключ от anti-captcha.com (оставьте пустым если он не нужен): ")
 if anticaptcha_api_key == '':
 	if USE_TOKEN:
-		vk_session = vk_api.VkApi(token=username, auth_handler=auth_handler)
+		vk_session = vk_api.VkApi(token=username, auth_handler=auth_handler, app_id=API_ID, client_secret=tmp)
 	else:
-		vk_session = vk_api.VkApi(username, password, auth_handler=auth_handler)
+		vk_session = vk_api.VkApi(username, password, auth_handler=auth_handler, app_id=API_ID, client_secret=tmp)
 else:
 	ANTICAPTCHA_KEY = anticaptcha_api_key
 	if USE_TOKEN:
-		vk_session = vk_api.VkApi(token=username, captcha_handler=captha_handler, auth_handler=auth_handler)
+		vk_session = vk_api.VkApi(token=username, captcha_handler=captha_handler, auth_handler=auth_handler, app_id=API_ID, client_secret=tmp)
 	else:
 		token = get_token(username, password)
-		vk_session = vk_api.VkApi(username, password, captcha_handler=captha_handler, auth_handler=auth_handler)
+		vk_session = vk_api.VkApi(username, password, captcha_handler=captha_handler, auth_handler=auth_handler, app_id=API_ID, client_secret=tmp)
 
 try:
 	vk_session.auth(token_only=True)
