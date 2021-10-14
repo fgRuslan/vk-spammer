@@ -264,12 +264,22 @@ vk = vk_session.get_api()
 # -------------------------------------------
 # Преобразовываем введённый id пользователя в цифровой формат
 
-victim = input("User id: ")
+print()
+print("Укажите id жертвы.")
+print("Чтобы спамить своим друзьям, укажите #friends.")
+print("Чтобы спамить друзьям, которые сейчас в сети, укажите #online.")
+print("Чтобы спамить в беседу, укажите её id как в примере: #c375")
+print("375 - это id беседы")
+print()
+victim = input("id жертвы: ")
 
 if victim == "#online":
 	SPAMMING_ONLINE_USERS = True
 elif victim == "#friends":
 	SPAMMING_FRIENDS = True
+elif victim.startswith("#c"):
+	victim = victim.replace("#c", "")
+	victim = int(victim) + 2000000000
 else:
 
 	victim = victim.split("/")
