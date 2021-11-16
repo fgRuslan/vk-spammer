@@ -23,11 +23,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install setuptools pyinstaller
+        pip install setuptools pyinstaller vk_api python3-anticaptcha requests
 
     - name: PyInstaller
       run: |
-        pyinstaller --exclude-module _bootlocale --onefile core/spam.py
+        pyinstaller --exclude-module _bootlocale --onefile core/spam.py --hidden-import=vk_api --hidden-import=python3-anticaptcha --hidden-import=requests
 
     - name: Publish artifact
       uses: actions/upload-artifact@v2

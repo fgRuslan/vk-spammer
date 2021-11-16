@@ -21,6 +21,7 @@ setup(
     },
     install_requires=[
         'vk_api',
-        'python3-anticaptcha'
+        'python3-anticaptcha',
+        'requests'
     ]
 )
