@@ -7,7 +7,7 @@ pip install vk-spammer
 ```
 
 Если вы на Windows, то можно скачать спамер без установки python.
-Для этого перейдите в раздел [Actions](https://github.com/fgRuslan/vk-spammer/actions) этого репозитория, выберите самый свежий билд и скачайте vk-spammer из раздела Artifacts.
+Для этого перейдите в раздел [Actions](https://github.com/fgRuslan/vk-spammer/actions/workflows/pyinstaller.yml) этого репозитория, выберите самый свежий билд и скачайте vk-spammer из раздела Artifacts.
 
 ### Запуск
 
