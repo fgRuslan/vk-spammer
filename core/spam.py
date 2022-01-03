@@ -207,7 +207,7 @@ else:
 	if len(username) == 85:
 		USE_TOKEN = True
 
-def captha_handler(captcha):
+def captcha_handler(captcha):
 	if ANTICAPTCHA_KEY == '':
 		solution = input("Решите капчу ({0}): ".format(captcha.get_url()))
 		return captcha.try_again(solution)
@@ -248,9 +248,9 @@ if anticaptcha_api_key == '':
 else:
 	ANTICAPTCHA_KEY = anticaptcha_api_key
 	if USE_TOKEN:
-		vk_session = vk_api.VkApi(token=username, captcha_handler=captha_handler, auth_handler=auth_handler, app_id=API_ID, client_secret=tmp)
+		vk_session = vk_api.VkApi(token=username, captcha_handler=captcha_handler, auth_handler=auth_handler, app_id=API_ID, client_secret=tmp)
 	else:
-		vk_session = vk_api.VkApi(username, password, captcha_handler=captha_handler, auth_handler=auth_handler, app_id=API_ID, client_secret=tmp)
+		vk_session = vk_api.VkApi(username, password, captcha_handler=captcha_handler, auth_handler=auth_handler, app_id=API_ID, client_secret=tmp)
 
 try:
 	vk_session.auth(token_only=True)
