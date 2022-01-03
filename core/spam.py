@@ -250,7 +250,6 @@ else:
 	if USE_TOKEN:
 		vk_session = vk_api.VkApi(token=username, captcha_handler=captha_handler, auth_handler=auth_handler, app_id=API_ID, client_secret=tmp)
 	else:
-		token = get_token(username, password)
 		vk_session = vk_api.VkApi(username, password, captcha_handler=captha_handler, auth_handler=auth_handler, app_id=API_ID, client_secret=tmp)
 
 try:
