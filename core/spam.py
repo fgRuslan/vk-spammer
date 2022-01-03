@@ -214,21 +214,6 @@ def captcha_handler(captcha):
 	key = ImageToTextTask.ImageToTextTask(anticaptcha_key=ANTICAPTCHA_KEY, save_format='const').captcha_handler(captcha_link=captcha.get_url())
 	return captcha.try_again(key['solution']['text'])
 
-def get_token(username, password):
-	url = "https://oauth.vk.com/token?grant_type=password&client_id=3697615&client_secret=AlVXZFMUqyrnABp8ncuU&username=%s&password=%s" % (username, password)
-
-	try:
-		r = urllib.request.urlopen(url)
-	except urllib.error.HTTPError as e:
-		print(e)
-		print("Не удалось залогиниться, возможно вы ввели неправильный пароль")
-		remove_auth_data()
-		sys.exit(1)
-
-	r = r.read()
-	token = json.loads(r)["access_token"]
-	return token
-
 def auth_handler():
 	key = input("Введите код подтверждения: ")
 	remember_device = True
