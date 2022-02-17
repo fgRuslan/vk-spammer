@@ -1,17 +1,17 @@
 #!/usr/bin/python
 # Author: https://vk.com/id181265169
 # https://github.com/fgRuslan/vk-spammer
-
+import vk_api
 import urllib.request, urllib.error, urllib.parse, json, random, time
 from requests.utils import requote_uri
 from python3_anticaptcha import ImageToTextTask, errors
+
 import threading
 import sys
-
 import os
 import platform
 import json
-import vk_api
+import codecs
 
 HOME_PATH = os.path.expanduser("~")
 SPAMMER_PATH = os.path.join(HOME_PATH + "/" + ".vk-spammer/")
@@ -44,7 +44,7 @@ auth_data = {}
 messages = []
 
 if os.path.exists(SPAMMER_PATH + "messages.txt"):
-	with open(SPAMMER_PATH + "messages.txt") as f:
+	with codecs.open(SPAMMER_PATH + "messages.txt", 'r') as f:
 		for line in f:
 			messages.append(line)
 else:
@@ -56,7 +56,7 @@ else:
 		"5"
 	]
 	# Создаём пустой файл messages.txt
-	open(SPAMMER_PATH + "messages.txt", 'a').close()
+	codecs.open(SPAMMER_PATH + "messages.txt", 'a').close()
 
 # -------------------------------------------
 # Сохраняем введённые данные авторизации в файл auth.dat
