@@ -176,7 +176,7 @@ if(args.editmessages):
 		os.system("notepad.exe " + SPAMMER_PATH + "messages.txt")
 	if platform.system() == "Linux":
 		os.system("nano " + SPAMMER_PATH + "messages.txt")
-	print("Please restart vk-spammer to reload the message list")
+	print("Перезапустите спамер, чтобы обновить список сообщений")
 	exit(0)
 
 if(args.removedata):
