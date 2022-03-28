@@ -11,10 +11,11 @@ import sys
 import os
 import platform
 import json
-import codecs
 
 HOME_PATH = os.path.expanduser("~")
 SPAMMER_PATH = os.path.join(HOME_PATH + "/" + ".vk-spammer/")
+MESSAGES_PATH: str = os.path.join(SPAMMER_PATH, "messages.txt")
+AUTH_PATH: str = os.path.join(SPAMMER_PATH, "auth.dat")
 
 SPAMMING_ONLINE_USERS = False
 SPAMMING_FRIENDS = False
@@ -43,8 +44,8 @@ auth_data = {}
 # Сообщения, которые будет отправлять спаммер
 messages = []
 
-if os.path.exists(SPAMMER_PATH + "messages.txt"):
-	with codecs.open(SPAMMER_PATH + "messages.txt", 'r') as f:
+if os.path.exists(MESSAGES_PATH):
+	with open(MESSAGES_PATH, 'r', encoding="utf-8") as f:
 		for line in f:
 			messages.append(line)
 else:
@@ -55,29 +56,28 @@ else:
 		"fuck",
 		"5"
 	]
-	# Создаём пустой файл messages.txt
-	codecs.open(SPAMMER_PATH + "messages.txt", 'a').close()
+	# Создаём файл messages.txt и записываем стандартные сообщения для примера
+	with open(MESSAGES_PATH, "w", encoding="utf-8") as f:
+		f.writelines(messages)
 
 # -------------------------------------------
 # Сохраняем введённые данные авторизации в файл auth.dat
 def do_save_auth_data():
-	with open(SPAMMER_PATH + "auth.dat", "w+") as f:
+	with open(AUTH_PATH, "w+", encoding="utf-8") as f:
 		json.dump(auth_data, f)
-	f.close()
 
 # Загружаем данные авторизации из файла auth.dat
 def load_auth_data():
 	global auth_data
-	if os.path.exists(SPAMMER_PATH + "auth.dat"):
-		f = open(SPAMMER_PATH + "auth.dat", 'r')
-		obj = json.load(f)
+	if os.path.exists(AUTH_PATH):
+		with open(AUTH_PATH, 'r', encoding="utf-8") as f:
+			obj = json.load(f)
 		auth_data = obj
-		f.close()
 		return True
 	return False
 def remove_auth_data():
 	print("Удаляю текущие данные авторизации...")
-	os.remove(SPAMMER_PATH + "auth.dat")
+	os.remove(AUTH_PATH)
 # -------------------------------------------
 
 class MainThread(threading.Thread):
