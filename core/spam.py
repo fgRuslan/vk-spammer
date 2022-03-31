@@ -2,9 +2,8 @@
 # Author: https://vk.com/id181265169
 # https://github.com/fgRuslan/vk-spammer
 import vk_api
-import urllib.request, urllib.error, urllib.parse, json, random, time
-from requests.utils import requote_uri
-from python3_anticaptcha import ImageToTextTask, errors
+import json, random, time
+from python3_anticaptcha import ImageToTextTask
 
 import threading
 import sys
