@@ -58,7 +58,7 @@ else:
 	]
 	# Создаём файл messages.txt и записываем стандартные сообщения для примера
 	with open(MESSAGES_PATH, "w", encoding="utf-8") as f:
-		f.writelines(messages)
+		f.writelines(f"{x}\n" for x in messages)
 
 # -------------------------------------------
 # Сохраняем введённые данные авторизации в файл auth.dat
