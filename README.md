@@ -54,3 +54,6 @@ vk-spammer -d 4
 Удачи.
 
 По всем вопросам обращаться сюда: [Мой VK](https://vk.com/id181265169). Пожалуйста, пишите только после прочтения README.
+
+![dont-srat](https://user-images.githubusercontent.com/11362683/169116313-d10b23ad-5705-4def-bfb9-968b4d5c6405.jpg)
+
