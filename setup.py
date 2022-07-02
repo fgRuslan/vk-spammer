@@ -7,7 +7,7 @@ LONG_DESC = long_description
 
 setup(
     name='vk-spammer',
-    version='1.2.5.2',
+    version='1.2.5.3',
     author='fgRuslan',
     author_email='ubijca16@gmail.com',
     url='https://github.com/fgRuslan/vk-spammer',

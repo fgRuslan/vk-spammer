@@ -114,7 +114,7 @@ class MainThread(threading.Thread):
                         victim_id = int(friend['id'])
                         vk.messages.send(
                             user_id=victim_id, message=msg, v=API_VERSION, random_id=random.randint(0, 10000))
-                        print("Sent ", msg, " to ", victim_id)
+                        print("Отправлено: ", msg, " получателю: ", victim_id)
                     time.sleep(delay)
                 except vk_api.exceptions.ApiError as e:
                     print("ОШИБКА!")
@@ -134,7 +134,7 @@ class MainThread(threading.Thread):
                             continue
                         vk.messages.send(
                             user_id=victim_id, message=msg, v=API_VERSION, random_id=random.randint(0, 10000))
-                        print("Sent ", msg, " to ", victim_id)
+                        print("Отправлено: ", msg, " получателю: ", victim_id)
                     time.sleep(delay)
                 except vk_api.exceptions.ApiError as e:
                     print("ОШИБКА!")
@@ -148,7 +148,7 @@ class MainThread(threading.Thread):
                     print(victim)
                     vk.messages.send(
                         peer_id=victim, message=msg, v=API_VERSION, random_id=random.randint(0, 10000))
-                    print("Sent ", msg)
+                    print("Отправлено: ", msg)
                     time.sleep(delay)
                 except vk_api.exceptions.ApiError as e:
                     print("ОШИБКА!")
@@ -166,7 +166,7 @@ def main():
         while thread.is_alive():
             thread.join(1)
     except KeyboardInterrupt:
-        print("Ctrl+C pressed...")
+        print("Нажали Ctrl+C, выходим...")
         sys.exit(1)
 
 
@@ -294,10 +294,10 @@ else:
     if victim.isdigit():
         victim = victim
     else:
-        print("Resolving screen name...")
+        print("Распознаём id...")
         r = vk.utils.resolveScreenName(screen_name=victim, v=API_VERSION)
         victim = r["object_id"]
-        print("It is: " + str(victim))
+        print("id: " + str(victim))
 
     r = vk.users.get(user_id=victim, fields="id", v=API_VERSION)
     r = r[0]["id"]
